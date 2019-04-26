@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace J5Bot
 {
@@ -52,6 +53,12 @@ namespace J5Bot
             client.SendMessage(e.Channel, " is ALIVE!");
         }
 
+        private void BotVector(OnMessageReceivedArgs e, string message)
+        {
+            client.SendMessage(e.ChatMessage.Channel, "Sending..");
+            Vector(message);
+        }
+
         private void Client_OnConnected(object sender, OnConnectedArgs e)
         {
             Console.WriteLine($"Connected to {e.AutoJoinChannel}");
@@ -70,7 +77,19 @@ namespace J5Bot
 
             if (e.ChatMessage.Message.Contains("!alive"))
                 BotAlive(e);
+
+            if (e.ChatMessage.Message.Contains("!vector say"))
+            {
+                string message = e.ChatMessage.Message;
+
+                message = message.Substring(11, message.Length - 11);
+
+                Console.WriteLine("Vector should say the following: " + message);
+
+                BotVector(e, message);
+            }
         }
+
 
         private void Client_OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
@@ -86,6 +105,15 @@ namespace J5Bot
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
 
-     
+        private void Vector(string say)
+        {
+            var launchEndpoint = "http://localhost:5000/vector/say/" + say;
+
+            var client = new HttpClient();
+            Console.WriteLine("Calling API ..." + launchEndpoint);
+
+            var result = client.GetAsync(launchEndpoint).Result;
+
+        }
     }
 }
