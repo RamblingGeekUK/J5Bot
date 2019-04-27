@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Web;
+using System.Text;
 
 namespace J5Bot
 {
@@ -107,10 +109,14 @@ namespace J5Bot
 
         private void Vector(string say)
         {
-            var launchEndpoint = "http://localhost:5000/vector/say/" + say;
+            // CMChrisJones
+            var sayAsByteArray = Encoding.UTF8.GetBytes(say);
+            var encoded = System.Convert.ToBase64String(sayAsByteArray);
+            //var safe = HttpUtility.HtmlEncode(say);
+            var launchEndpoint = "http://localhost:5000/vector/say/" + encoded;
 
             var client = new HttpClient();
-            Console.WriteLine("Calling API ..." + launchEndpoint);
+            Console.WriteLine("Calling API ..." + encoded);
 
             var result = client.GetAsync(launchEndpoint).Result;
 
