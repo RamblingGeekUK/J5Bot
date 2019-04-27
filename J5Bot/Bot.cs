@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
 using System.Text;
+using System.Linq;
 
 namespace J5Bot
 {
@@ -58,7 +59,12 @@ namespace J5Bot
         private void BotVector(OnMessageReceivedArgs e, string message)
         {
             client.SendMessage(e.ChatMessage.Channel, "Sending..");
-            Vector(message);
+            Vector(message,e);
+        }
+        
+        private void MessageChat(OnMessageReceivedArgs e, string message)
+        {
+            client.SendMessage(e.ChatMessage.Channel, message);
         }
 
         private void Client_OnConnected(object sender, OnConnectedArgs e)
@@ -80,7 +86,8 @@ namespace J5Bot
             if (e.ChatMessage.Message.Contains("!alive"))
                 BotAlive(e);
 
-            if (e.ChatMessage.Message.Contains("!vector say"))
+
+            if (e.ChatMessage.Message.Contains("!vector say", StringComparison.CurrentCultureIgnoreCase))
             {
                 string message = e.ChatMessage.Message;
 
@@ -107,7 +114,7 @@ namespace J5Bot
                 client.SendMessage(e.Channel, $"Welcome {e.Subscriber.DisplayName} to the substers! You just earned 500 points!");
         }
 
-        private void Vector(string say)
+        private void Vector(string say, OnMessageReceivedArgs e)
         {
             // CMChrisJones
             var sayAsByteArray = Encoding.UTF8.GetBytes(say);
@@ -115,10 +122,19 @@ namespace J5Bot
             //var safe = HttpUtility.HtmlEncode(say);
             var launchEndpoint = "http://localhost:5000/vector/say/" + encoded;
 
-            var client = new HttpClient();
-            Console.WriteLine("Calling API ..." + encoded);
+            try
+            {
+                var client = new HttpClient();
+                Console.WriteLine("Calling API ..." + encoded);
 
-            var result = client.GetAsync(launchEndpoint).Result;
+                var result = client.GetAsync(launchEndpoint).Result;
+            }
+            catch
+            {
+                Console.WriteLine("Called failed, check the Vector API is running");
+                MessageChat(e, "Message failed to send");
+            }
+
 
         }
     }
