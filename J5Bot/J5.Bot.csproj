@@ -5,6 +5,7 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <UserSecretsId>8572bf6d-c448-45fa-808f-e458f59b9e44</UserSecretsId>
+    <StartupObject>J5Bot.Program</StartupObject>
   </PropertyGroup>
 
 
