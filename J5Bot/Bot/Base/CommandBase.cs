@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TwitchLib.Client;
-using TwitchLib.Client.Models;
 
-namespace J5.Bot.Bot.Commands
+namespace RG.Bot.Base
 {
     public abstract class CommandBase
     {

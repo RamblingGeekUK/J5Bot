@@ -1,9 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-using TwitchLib.Client;
+﻿using TwitchLib.Client;
 using TwitchLib.Client.Events;
 
-namespace J5.Bot.Bot.Commands
+namespace RG.Bot.Base
 {
     public class CommandAnnounce : CommandBase
     {

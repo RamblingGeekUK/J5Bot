@@ -1,23 +1,14 @@
-﻿using System;
+﻿using RG.Bot.Base;
+using System;
+using System.Collections.Generic;
 using TwitchLib.Client;
 using TwitchLib.Client.Enums;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Extensions;
 using TwitchLib.Client.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Hosting;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Web;
-using System.Text;
-using System.Linq;
-using J5.Bot.Bot.Commands;
-using System.Collections.Generic;
-using J5.Bot.Bot.Base;
 
-namespace J5Bot
+
+namespace RG.Bot
 {
     public class Bot
     {

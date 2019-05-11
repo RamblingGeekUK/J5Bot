@@ -1,9 +1,7 @@
-﻿using J5.Bot.Bot.Base;
-using System;
-using TwitchLib.Client;
+﻿using TwitchLib.Client;
 using TwitchLib.Client.Events;
 
-namespace J5.Bot.Bot.Commands
+namespace RG.Bot.Base
 {
     public class CommandALive : CommandBase, ICommand
     {
