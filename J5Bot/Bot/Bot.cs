@@ -35,7 +35,9 @@ namespace RG.Bot
             this.commands = new Dictionary<string, ICommand>
             {
                 { "alive", new CommandALive(client) },
-                { "vector", new CommandVector(client) }
+                { "vector-say", new CommandVector(client) },
+                { "vector-joke", new CommandTellJoke(client) },
+                { "attention", new CommandAttention(client) }
             };
         }
 

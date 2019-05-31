@@ -1,0 +1,20 @@
+﻿using TwitchLib.Client;
+using TwitchLib.Client.Events;
+
+namespace RG.Bot.Base
+{
+    public class CommandAttention : CommandBase, ICommand
+    {
+        public CommandAttention(TwitchClient client)
+            : base(client)
+        {
+        }
+
+    public void Execute(OnChatCommandReceivedArgs e)
+        {
+            client.SendMessage(e.Command.ChatMessage.Channel, "Sending..");
+            var message = string.Format("{0} has asked you to stop and please check chat", e.Command.ChatMessage.Username);
+            this.Vector(message, e);
+        }
+    }
+}
