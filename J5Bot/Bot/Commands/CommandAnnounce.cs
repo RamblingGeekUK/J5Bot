@@ -1,4 +1,7 @@
-﻿using TwitchLib.Client;
+﻿using System;
+using System.Net.Http;
+using System.Text;
+using TwitchLib.Client;
 using TwitchLib.Client.Events;
 
 namespace RG.Bot.Base
@@ -10,9 +13,35 @@ namespace RG.Bot.Base
         {
         }
 
-        public void Execute(OnJoinedChannelArgs e)
+        public void Execute(string message, OnJoinedChannelArgs e)
         {
-            this.Say(e.Channel, " is ALIVE!");
+            this.SendMessage(e.Channel, message);
+            this.Vector(message);
         }
+
+        public void Execute(string message, OnChatCommandReceivedArgs e)
+        {
+            this.SendMessage(e.Command.ChatMessage.BotUsername, message);
+            this.Vector(message);
+        }
+
+        protected void Vector(string say)
+        {
+            // Added by CMChrisJones
+            var sayAsByteArray = Encoding.UTF8.GetBytes(say);
+            var encoded = System.Convert.ToBase64String(sayAsByteArray);
+
+            try
+            {
+                var client = new HttpClient();
+                Console.WriteLine("Calling API ..." + encoded);
+                var result = client.GetAsync(VectorRestURL + "/say/" + encoded).Result;
+            }
+            catch
+            {
+                Console.WriteLine("Called failed, check the Vector API is running");
+            }
+        }
+
     }
 }

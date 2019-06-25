@@ -14,21 +14,10 @@ namespace J5Bot
 {
     public class Startup
     {
-        //// Added by me
-        //private string _twitchbot_username;
-        //private string _twitch_token;
-        //private string _twitch_channel;
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            //if (env.IsDevelopment())
-            //{
-            //    var builder = new ConfigurationBuilder();
-            //    builder.AddUserSecrets<Startup>();
-            //    Configuration = builder.Build();
-            //}
         }
 
         public IConfiguration Configuration { get; }
@@ -36,18 +25,6 @@ namespace J5Bot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //_twitchbot_username = Configuration["AppSettings:twitchbot_username"];
-            //_twitch_token = Configuration["AppSettings:twitch_token"];
-            //_twitch_channel = Configuration["AppSettings:twitch_channel"];
-
-            //var BotConfig = Configuration.GetSection("AppSettings").Get<BotSettings>();
-
-            //_twitchbot_username = BotConfig.Twitchbot_username;
-            //_twitch_token = BotConfig.Twitch_token;
-            //_twitch_channel = BotConfig.Twitch_channel;
-
-            //services.Configure<BotSettings>(options => Configuration.GetSection("AppSettings").Bind(options));
 
             services.Configure<CookiePolicyOptions>(options =>
             {

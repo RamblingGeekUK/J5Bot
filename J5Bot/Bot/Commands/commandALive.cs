@@ -12,7 +12,7 @@ namespace RG.Bot.Base
 
         public void Execute(OnChatCommandReceivedArgs e)
         {
-            this.Say(e.Command.ChatMessage.Channel, " is ALIVE!");
+            this.SendMessage(e.Command.ChatMessage.Channel, " is ALIVE!");
         }
     }
 }

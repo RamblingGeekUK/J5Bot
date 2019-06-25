@@ -14,7 +14,7 @@ namespace RG.Bot.Base
         {
             client.SendMessage(e.Command.ChatMessage.Channel, "Sending..");
             var message = string.Format("{0} has asked you to stop and please check chat", e.Command.ChatMessage.Username);
-            this.Vector(message, e);
+            new CommandAnnounce(client).Execute(message, e);
         }
     }
 }
