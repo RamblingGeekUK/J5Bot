@@ -1,12 +1,21 @@
 ﻿using RG.Bot.Base;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
 
 namespace RG.Bot
 {
+
+    public interface IPubSubService
+    {
+        Task Execute();
+    }
+
     public class Bot
     {
         private readonly TwitchClient client;
@@ -33,13 +42,34 @@ namespace RG.Bot
                 { "lurk", new CommandLurk(client) },
                 { "unlurk", new CommandUnLurk(client) },
                 { "freeplay", new CommandFreePlay(client) },
+                { "commands", new CommandCommands(client) },
             };
         }
 
         private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Console.WriteLine("J5 is connected to chat");
+            //Run_cmd("D:\\Dev\\Stream\\Vector\\VectorREST\\remote_control.py","");
             new CommandAnnounce(client).Execute("Vector is Alive!", e);
+        }
+
+        private void Run_cmd(string cmd, string args)
+        {
+            ProcessStartInfo start = new ProcessStartInfo
+            {
+                FileName = "py",
+                Arguments = string.Format("{0} {1}", cmd, args),
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+            using (Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    Console.Write(result);
+                }
+            }
         }
 
         private static void Client_OnLog(object sender, OnLogArgs e)

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RG.Bot;
+using RG.Bot.PubSub;
 
 namespace J5Bot
 {
@@ -34,6 +36,7 @@ namespace J5Bot
             });
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSingleton<IPubSubService, PubSubService>();
             
         }
 
@@ -56,6 +59,7 @@ namespace J5Bot
             app.UseCookiePolicy();
 
             app.UseMvc();
+            
         }
     }
 }
