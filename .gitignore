@@ -341,3 +341,6 @@ healthchecksdb
 
 # Dockerfile
 Dockerfile
+
+# Secrets must stay local 
+secrets.txt

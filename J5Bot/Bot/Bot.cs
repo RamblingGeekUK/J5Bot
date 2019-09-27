@@ -43,6 +43,7 @@ namespace RG.Bot
                 { "unlurk", new CommandUnLurk(client) },
                 { "freeplay", new CommandFreePlay(client) },
                 { "commands", new CommandCommands(client) },
+                { "scene", new CommandScene(client) },
             };
         }
 
