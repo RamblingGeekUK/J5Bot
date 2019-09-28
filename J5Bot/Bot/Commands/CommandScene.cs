@@ -15,10 +15,10 @@ namespace RG.Bot.Base
 
         public void Execute(OnChatCommandReceivedArgs e)
         {
-            string scene = "";
             string message = e.Command.ChatMessage.Message;
             message = message.Substring(message.LastIndexOf(" "), message.Length - message.LastIndexOf(" "));
             Console.WriteLine("Output: " + message);
+            string scene;
             switch (message.Trim())
             {
                 case "1":

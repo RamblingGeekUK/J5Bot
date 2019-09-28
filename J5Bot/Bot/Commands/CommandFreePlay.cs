@@ -18,8 +18,9 @@ namespace RG.Bot.Base
         {
             client.SendMessage(e.Command.ChatMessage.Channel, "Sending..");
 
-            var message = $" setting FreePlay" ;
-            this.VectorRESTPost();
+            var message = $" setting FreePlay to true" ;
+            VectorFreePlayPost(false);
+
             this.SendMessage(e.Command.ChatMessage.Channel, message);
             new CommandAnnounce(client).Execute(message, e);
         }

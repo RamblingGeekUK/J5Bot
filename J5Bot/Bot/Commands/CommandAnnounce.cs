@@ -13,6 +13,11 @@ namespace RG.Bot.Base
         {
         }
 
+        public void Execute (string message, OnRaidNotificationArgs e)
+        {
+            this.SendMessage(e.Channel, message);
+            this.Vector(message);
+        }
         public void Execute(string message, OnJoinedChannelArgs e)
         {
             this.SendMessage(e.Channel, message);

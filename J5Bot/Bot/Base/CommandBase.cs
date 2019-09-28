@@ -30,19 +30,29 @@ namespace RG.Bot.Base
             this.client.SendMessage(channel, message);
         }
 
-        protected void VectorRESTPost()
+        protected void VectorFreePlayPost(Boolean enable)
         {
             try
             {
-                var client = new HttpClient();
-                Console.WriteLine("Calling API setFreeplayEnabled...");
-                
-                FreePlay freeplaycommand = new FreePlay();
-                string json = JsonConvert.SerializeObject(freeplaycommand);
-                var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-                var result = client.PostAsync(VectorRestURL + "/setFreeplayEnabled", content).Result;
-                
-                Console.WriteLine("Free play return status {0}: ", result.StatusCode);
+                using (HttpClient client = new HttpClient())
+                {
+                    Console.WriteLine("Calling API setFreeplayEnabled...");
+
+                    //FreePlay freeplaycommand = new FreePlay();
+                    //string json = JsonConvert.SerializeObject(freeplaycommand);
+                    var content = new StringContent("", Encoding.UTF8, "application/json");
+
+                    if (enable == true)
+                    {
+                        var result = client.PostAsync(VectorRestURL + "/setFreeplayOn", content).Result;
+                        Console.WriteLine("Free play return status: {0}", result.StatusCode);
+                    }
+                    else
+                    {
+                        var result = client.PostAsync(VectorRestURL + "/setFreeplayOff", content).Result;
+                        Console.WriteLine("Free play return status: {0}", result.StatusCode);
+                    }
+                }
             }
             catch
             {
@@ -50,11 +60,9 @@ namespace RG.Bot.Base
             }
         }
 
-        internal class FreePlay
-        {
-#pragma warning disable IDE1006 // Naming Styles
-            public Boolean isFreeplayEnabled { get; set; }
-#pragma warning restore IDE1006 // Naming Styles
-        }
+        //internal class FreePlay
+        //{
+        //    public Boolean isFreeplayEnabled { get; set; }
+        //}
     }
 }

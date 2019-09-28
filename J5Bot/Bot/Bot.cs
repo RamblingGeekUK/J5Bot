@@ -10,12 +10,6 @@ using TwitchLib.Client.Models;
 
 namespace RG.Bot
 {
-
-    public interface IPubSubService
-    {
-        Task Execute();
-    }
-
     public class Bot
     {
         private readonly TwitchClient client;
@@ -31,6 +25,7 @@ namespace RG.Bot
             this.client.OnJoinedChannel += Client_OnJoinedChannel;
             this.client.OnConnected += Client_OnConnected;
             this.client.OnChatCommandReceived += Client_OnChatCommandReceived;
+            this.client.OnRaidNotification += Client_OnRaidNotification;
             this.client.Connect();
 
             this.commands = new Dictionary<string, ICommand>
@@ -45,6 +40,16 @@ namespace RG.Bot
                 { "commands", new CommandCommands(client) },
                 { "scene", new CommandScene(client) },
             };
+        }
+
+        private void Client_OnRaidNotification(object sender, OnRaidNotificationArgs e)
+        {
+            // Say thank you for the raid 3 times.
+            for (int i = 0; i < 3; i++)
+            {
+                new CommandAnnounce(client).Execute("Thank you for the raid!", e);
+            }
+            
         }
 
         private void Client_OnJoinedChannel(object sender, OnJoinedChannelArgs e)
