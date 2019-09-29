@@ -14,14 +14,17 @@ namespace RG.Bot
     {
         private readonly TwitchClient client;
         private readonly Dictionary<string, ICommand> commands;
- 
+        private readonly string chatfilename = DateTime.UtcNow.ToString("dd-MM-yyyy--HH-mm-ss") + ".chat";  // Create filename based on todays date and time to be used to log chat to text file
+
         public Bot()
         {
+
             ConnectionCredentials credentials = new ConnectionCredentials(Settings.Twitch_botusername, Settings.Twitch_token);
 
             this.client = new TwitchClient();
             this.client.Initialize(credentials, Settings.Twitch_channel);
             this.client.OnLog += Client_OnLog;
+            this.client.OnMessageReceived += OnMessageReceived;
             this.client.OnJoinedChannel += Client_OnJoinedChannel;
             this.client.OnConnected += Client_OnConnected;
             this.client.OnChatCommandReceived += Client_OnChatCommandReceived;
@@ -40,6 +43,27 @@ namespace RG.Bot
                 { "commands", new CommandCommands(client) },
                 { "scene", new CommandScene(client) },
             };
+            
+        }
+
+        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        {
+            StreamWriter writer;
+
+            if (File.Exists(chatfilename) == true)
+            {
+                using (writer = File.AppendText(chatfilename))
+                {
+                    writer.WriteAsync($"{DateTime.UtcNow.ToString()},{e.ChatMessage.UserType},{e.ChatMessage.DisplayName},{e.ChatMessage.Username},{e.ChatMessage.IsSubscriber.ToString()},{e.ChatMessage.Message}" + Environment.NewLine);
+                }
+            }
+            else
+            {
+                using (writer = File.CreateText(chatfilename))
+                {
+                    writer.WriteAsync($"{DateTime.UtcNow.ToString()},{e.ChatMessage.UserType},{e.ChatMessage.DisplayName},{e.ChatMessage.Username},{e.ChatMessage.IsSubscriber.ToString()},{e.ChatMessage.Message}" + Environment.NewLine);
+                }
+            }
         }
 
         private void Client_OnRaidNotification(object sender, OnRaidNotificationArgs e)
@@ -48,6 +72,8 @@ namespace RG.Bot
             for (int i = 0; i < 3; i++)
             {
                 new CommandAnnounce(client).Execute("Thank you for the raid!", e);
+                new CommandAnnounce(client).Execute("Join the discord channel", e);
+                new CommandAnnounce(client).Execute("!discord", e);
             }
             
         }
@@ -56,7 +82,6 @@ namespace RG.Bot
         {
             Console.WriteLine("J5 is connected to chat");
             //Run_cmd("D:\\Dev\\Stream\\Vector\\VectorREST\\remote_control.py","");
-            new CommandAnnounce(client).Execute("Vector is Alive!", e);
         }
 
         private void Run_cmd(string cmd, string args)
@@ -77,6 +102,8 @@ namespace RG.Bot
                 }
             }
         }
+
+
 
         private static void Client_OnLog(object sender, OnLogArgs e)
         {

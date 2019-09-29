@@ -38,9 +38,11 @@ namespace RG.Bot.Base
 
             try
             {
-                var client = new HttpClient();
-                Console.WriteLine("Calling API ..." + encoded);
-                var result = client.GetAsync(VectorRestURL + "/say/" + encoded).Result;
+                using (HttpClient client = new HttpClient())
+                {
+                    Console.WriteLine("Calling API ..." + encoded);
+                    var result = client.GetAsync(VectorRestURL + "/say/" + encoded).Result;
+                }
             }
             catch
             {
